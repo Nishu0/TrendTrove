@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Trending Twitter Tweets</title>
+  <style>
+    /* Add your custom CSS styles here */
+    .card {
+      margin: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 300px;
+      overflow: hidden;
+    }
+    
+    .card:hover {
+      box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.5);
+    }
+    
+    .card img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+    }
+    
+    .card .content {
+      padding: 10px;
+    }
+    
+    .card .content h3 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: bold;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+    
+    .card .content p {
+      margin: 10px 0;
+      font-size: 14px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+    
+    .card .content button {
+      margin: 10px 0;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 5px;
+      background-color: #007bff;
+      color: #fff;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    
+    .card-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: stretch;
+    }
+    
+    .header {
+      background-color: #007bff;
+      color: #fff;
+      padding: 20px;
+    }
+    
+    .header h1 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: bold;
+      text-align: center;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Trending Twitter Tweets</h1>
+    <p>Check out the latest tweets that are trending on Twitter.</p>
+  </div>
+  
+  <div class="container">
+    <div class="card-grid">
+      <% tweets.forEach(tweet => { %>
+        <div class="card">
+          <img src="<%= tweet.image %>" alt="<%= tweet.title %>">
+          <div class="content">
+            <h3><%= tweet.title %></h3>
+            <p><%= tweet.description %></p>
+            <button><a href="<%= tweet.link %>" target="_blank">Listen Now</a></button>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  </div>
+</body>
+</html>
