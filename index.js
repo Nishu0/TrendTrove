@@ -57,8 +57,12 @@ app.get('/',requireLogin, (req,res)=>{
     res.render('index.ejs');
 });
 
-app.get('/profile',(req,res)=>{
-    res.render('profile.ejs');
+app.get('/profile', async (req, res) => {
+  res.render('profile.ejs');
+});
+
+app.get('/trends', async (req, res) => {
+  res.render('trend.ejs');
 });
 
 app.post('/login',userRoutes)
