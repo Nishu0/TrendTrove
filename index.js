@@ -57,8 +57,8 @@ app.get('/',requireLogin, (req,res)=>{
     res.render('index.ejs');
 });
 
-app.get('/gallery',(req,res)=>{
-    res.render('gallery.ejs');
+app.get('/profile',(req,res)=>{
+    res.render('profile.ejs');
 });
 
 app.post('/login',userRoutes)
