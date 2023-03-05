@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Liked Songs and Videos</title>
+  <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
+</head>
+<body>
+  <div class="header">
+    <h1>Liked Songs and Videos</h1>
+  </div>
+  
+  <div class="container">
+    <% if (likedSongs.length > 0) { %>
+      <h2>Liked Songs</h2>
+      <div class="card-grid">
+        <% for (let i = 0; i < likedSongs.length; i++) { %>
+          <div class="card">
+            <div class="card-image">
+              <img src="<%= likedSongs[i].thumbnailUrl %>" alt="<%= likedSongs[i].title %>">
+            </div>
+            <div class="card-content">
+              <h3><%= likedSongs[i].title %></h3>
+              <p><%= likedSongs[i].artist %> | <%= likedSongs[i].album %></p>
+              <a href="<%= likedSongs[i].listenNowUrl %>" class="listen-now-button">Listen Now</a>
+              <a href="/songs/unlike/<%= likedSongs[i].id %>" class="unlike-button">Unlike</a>
+            </div>
+          </div>
+        <% } %>
+      </div>
+    <% } %>
+
+    <% if (likedVideos.length > 0) { %>
+      <h2>Liked Videos</h2>
+      <div class="card-grid">
+        <% for (let i = 0; i < likedVideos.length; i++) { %>
+          <div class="card">
+            <div class="card-image">
+              <img src="<%= likedVideos[i].thumbnailUrl %>" alt="<%= likedVideos[i].title %>">
+            </div>
+            <div class="card-content">
+              <h3><%= likedVideos[i].title %></h3>
+              <p><%= likedVideos[i].description.substr(0, 50) %>...</p>
+              <a href="<%= likedVideos[i].watchNowUrl %>" class="watch-now-button">Watch Now</a>
+              <a href="/videos/unlike/<%= likedVideos[i].id %>" class="unlike-button">Unlike</a>
+            </div>
+          </div>
+        <% } %>
+      </div>
+    <% } %>
+  </div>
+
+</body>
+</html>

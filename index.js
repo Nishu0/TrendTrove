@@ -16,12 +16,13 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const session = require('express-session');
 const connectDB =require('./database/connection');
+const userRoutes=require('./routes/users');
 
 app.use(session({
     secret: "thisismysecrctekeyfhrgfgrfrty84fwir767",
 }));
 
-//const User=require('./models/user')
+const User=require('./models/user')
 //const Places=require('./models/places')
 
 
@@ -37,6 +38,8 @@ app.set('views',[path.join(__dirname, 'views')]);
 
 app.set('view engine', 'ejs');
 
+// app.use('/users', users)
+
 //mongo connection
 connectDB();
 
@@ -50,7 +53,7 @@ const requireLogin = (req, res, next) => {
 
 //--------------------------------------------------------------
 // Index page
-app.get('/', requireLogin,(req,res)=>{
+app.get('/', (req,res)=>{
     res.render('index.ejs');
 });
 
@@ -58,6 +61,8 @@ app.get('/gallery',(req,res)=>{
     res.render('gallery.ejs');
 });
 
+app.post('/login',userRoutes)
+app.post('/register', userRoutes);
 
 //------------------------------------------------
 
@@ -68,7 +73,7 @@ app.get('/login',(req,res)=>{
 	res.render('login.ejs')
 })
 
-app.get('/videos', async (req, res) => {
+app.get('/video', async (req, res) => {
         try {
           const response = await axios.get('https://www.googleapis.com/youtube/v3/videos', {
             params: {
@@ -98,52 +103,6 @@ app.get('/videos', async (req, res) => {
     }
 });
 
-app.get('/videos/trending', async (req, res) => {
-  try {
-    const response = await axios.get('https://www.googleapis.com/youtube/v3/videos', {
-      params: {
-        part: 'snippet,statistics',
-        chart: 'mostPopular',
-        regionCode: 'US',
-        maxResults: 10,
-        key: process.env.YOUTUBE_API_KEY // Replace with your own YouTube API key
-      }
-    });
-
-    const videos = response.data.items.map(item => ({
-      id: item.id,
-      title: item.snippet.title,
-      description: item.snippet.description,
-      thumbnailUrl: item.snippet.thumbnails.default.url,
-      viewCount: item.statistics.viewCount,
-      likeCount: item.statistics.likeCount,
-      dislikeCount: item.statistics.dislikeCount,
-      embedUrl: `https://www.youtube.com/embed/${item.id}`,
-      isFavorite: false // Initialize isFavorite to false for all videos
-    }));
-
-    // Render the EJS template with the videos data
-    res.render('videos', { videos });
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Internal Server Error');
-  }
-});
-
-app.post('/videos/:id/favorite', (req, res) => {
-  const videoId = req.params.id;
-  const isFavorite = req.body.isFavorite;
-
-  // Here you can update the database or perform any other operation to save the isFavorite status
-  // For demo purposes, we will just update the video object in the videos array
-  videos.forEach(video => {
-    if (video.id === videoId) {
-      video.isFavorite = isFavorite;
-    }
-  });
-
-  res.status(200).send('OK');
-});
 
 app.get('/music', async (req, res) => {
     try {
@@ -187,18 +146,42 @@ app.get('/music', async (req, res) => {
     }
   });
 
+  app.get('/tweets', async (req, res) => {
+    try {
+      const response = await axios.get('https://api.twitter.com/2/tweets/search/recent', {
+        headers: {
+          Authorization: `Bearer ${process.env.TWITTER_BEARER_TOKEN}`, // Replace with your own Twitter bearer token
+        },
+        params: {
+          query: '#trending',
+          max_results: 12,
+          expansions: 'author_id',
+          'tweet.fields': 'public_metrics,created_at',
+          'user.fields': 'name,profile_image_url',
+        },
+      });
+  
+      const tweets = response.data.data.map(tweet => ({
+        id: tweet.id,
+        text: tweet.text,
+        authorName: response.data.includes.users.find(user => user.id === tweet.author_id).name,
+        authorImageUrl: response.data.includes.users.find(user => user.id === tweet.author_id).profile_image_url,
+        retweets: tweet.public_metrics.retweet_count,
+        likes: tweet.public_metrics.like_count,
+        createdAt: tweet.created_at,
+      }));
+  
+      res.render('tweets', { tweets });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  });
 
 app.get('/register',(req,res)=>{
 	res.render('signup.ejs')
 })
 
-app.get('/places',(req,res)=>{
-	res.render('places.ejs')
-})
-
-app.get('/foods',(req,res)=>{
-	res.render('foods.ejs')
-})
 
 app.listen(port, () => {
     console.log(`Server started listen to the port ${port}`);

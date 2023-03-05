@@ -57,19 +57,24 @@
             </div>
         </div>
         <div id="main2">
-            <form id="form">
+            <form id="form" action="/login" class="login" method="POST">
                 <div>
                     <div>
                         <label for="">Email Address <span>*</span></label>
-                        <input type="email" id="email">
+                        <input type="email" id="email" name="email" required>
                     </div>
                     <div>
                         <label for="">Password: <span>*</span></label>
-                        <input type="password" id="setPassword">
+                        <input type="password" id="verifyPassword" name="password" required`>
                     </div>
                     <div class="info" id="btn-p">
                         <button id="submit">Submit</button>
                     </div>
+                    <div class="register">
+                        <p>Don't have a account? </p>
+                        <a href="/register">Register</a>
+                    </div>
+                   
                 </div>
             </form>
         </div>
