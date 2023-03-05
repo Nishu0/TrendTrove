@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Trending Videos</title>
+  <style>
+    body {
+      background-color: #f5f5f5;
+      font-family: Arial, sans-serif;
+    }
+
+    .header {
+      background-color: #f44336;
+      color: white;
+      padding: 20px;
+    }
+
+    .videos {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .video-card {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      width: 32%;
+      margin-bottom: 20px;
+      overflow: hidden;
+      transition: box-shadow 0.3s;
+    }
+
+    .video-card:hover {
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .video-thumbnail {
+      width: 100%;
+      height: 0;
+      padding-bottom: 56.25%;
+      position: relative;
+    }
+
+    .video-thumbnail img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .video-title {
+      font-size: 16px;
+      font-weight: bold;
+      margin: 10px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .video-description {
+      font-size: 14px;
+      margin: 0 10px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .watch-now {
+      background-color: #f44336;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      padding: 8px 16px;
+      margin: 10px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .watch-now:hover {
+      background-color: #d32f2f;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Trending Videos</h1>
+    <p>Watch the hottest videos on YouTube right now!</p>
+  </div>
+
+  <div class="videos">
+    <% for(let i = 0; i < videos.length; i++) { %>
+      <div class="video-card">
+        <div class="video-thumbnail">
+          <img src="<%= videos[i].thumbnailUrl %>" alt="<%= videos[i].title %>">
+        </div>
+        <div class="video-title"><%= videos[i].title %></div>
+        <div class="video-description"><%= videos[i].description.substring(0, 100) %>...</div>
+        <button class="watch-now"><a href="<%= videos[i].embedUrl %>" target="_blank">Watch now</a></button>
+      </div>
+    <% } %>
+  </div>
+</body>
+</html>
